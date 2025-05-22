@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moonlite Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-bg: #0a1833;
+            --navy-bg-dark: #07122a;
+            --navy-bg-light: #1c2c4a;
+            --navy-accent: #2e4a7d;
+            --navy-accent-light: #3e5c99;
+            --navy-accent-bright: #4f7ccf;
+            --navy-gold: #ffd700;
+            --navy-white: #f5f7fa;
+            --navy-grey: #b8c1d1;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--navy-bg) 0%, var(--navy-bg-dark) 100%);
+            color: var(--navy-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--navy-bg) 60%, var(--navy-accent-bright) 100%);
+            padding: 18px 20px 14px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            box-shadow: 0 4px 24px 0 rgba(10,24,51,0.25);
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo img {
+            height: 56px;
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px 0 rgba(46,74,125,0.12);
+            background: #fff2;
+        }
+
+        .header-title-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .header-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--navy-accent-bright);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px #0008;
+        }
+
+        .header-subtitle {
+            font-size: 1em;
+            color: var(--navy-gold);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 8px #0006;
+        }
+
+        nav {
+            text-align: center;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        nav a {
+            color: var(--navy-white);
+            text-decoration: none;
+            margin: 0 18px;
+            font-size: 1.15em;
+            font-weight: 600;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+            padding: 6px 0 6px 0;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: var(--navy-gold);
+            border-bottom: 2px solid var(--navy-gold);
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            color: var(--navy-white);
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            background: var(--navy-bg);
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: var(--navy-white);
+            text-decoration: none;
+            padding: 10px;
+            font-size: 1.1em;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--navy-accent-bright);
+        }
+
+        /* Redesigned About Section - Improved Spacing and Image */
+        .about-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 110px;
+            margin-bottom: 48px;
+            padding: 60px 32px 50px 32px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            background: rgba(46, 74, 125, 0.13);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(46,74,125,0.18);
+            position: relative;
+        }
+        .about-text {
+            flex: 1.2;
+            text-align: left;
+            padding-right: 18px;
+        }
+        .about-section h2 {
+            font-size: 2.2em;
+            color: var(--navy-accent-bright);
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+        .about-section p {
+            font-size: 1.08em;
+            color: var(--navy-grey);
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+        .about-carousel-container {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 0;
+        }
+        .about-carousel {
+            position: relative;
+            width: 100%; /* Increased width for longer rectangle */
+            max-width: 800px;
+            aspect-ratio: 16/7;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 36px 0 rgba(46,74,125,0.22);
+            border: 4px solid var(--navy-accent-bright);
+            background: #fff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .about-carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            transition: opacity 0.5s;
+            border-radius: 20px;
+            box-shadow: 0 2px 16px 0 rgba(46,74,125,0.10);
+            transform: scale(1.05);
+        }
+        .about-carousel img.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .carousel-arrow {
+            display: none !important;
+        }
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .carousel-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--navy-grey);
+            cursor: pointer;
+            background: rgba(184, 193, 209, 0.4); /* More transparent when inactive */
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .carousel-dot.active {
+            background: var(--navy-accent-bright);
+            transform: scale(1.2); /* Enlarge active dot */
+            border: 2px solid var(--navy-gold);
+        }
+
+        .carousel-dot:hover {
+            background: var(--navy-gold);
+            transform: scale(1.1);
+        }
+        .about-carousel::before,
+        .about-carousel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 5%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        } 
+
+        .about-carousel::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(10,24,51,0.4), transparent);
+        } 
+        
+        @keyframes carouselFadeIn {
+           from { opacity: 0; transform: scale(1.05); }
+           to { opacity: 1; transform: scale(1); }
+       }
+
+        .about-carousel img.active {
+           animation: carouselFadeIn 0.8s ease forwards;
+     }
+
+        @media (max-width: 900px) {
+            .about-section {
+                flex-direction: column-reverse;
+                gap: 24px;
+                max-width: 95;
+                padding: 40px 20px 30px 20px;
+                margin-top: 90px;
+            }
+            .about-text {
+                text-align: center;
+                padding-right: 0;
+            }
+            .about-carousel {
+                width: 600px; /* Increased width for tablet/mobile */
+                width: 100%;
+                border-radius: 14px;
+                border-width: 3px;
+                aspect-ratio: 16/10;
+            }
+        }
+        @media (max-width: 600px) {
+            .about-section {
+                padding: 16px 4px 8px 4px;
+                gap: 10px;
+                margin-top: 70px;
+            }
+            .about-carousel {
+                width: 480px; /* Keep width for small screens */
+                width: 100%;
+                border-radius: 8px;
+                aspect-ratio: 16/12;
+            }
+        }
+
+        /* Services Section */
+        .services-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px 20px 20px;
+        }
+
+        .services-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: var(--navy-accent-bright);
+            margin-bottom: 30px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .service-card {
+            background: rgba(46, 74, 125, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 370px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border: 1px solid var(--navy-accent);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .service-card h3 {
+            font-size: 1.5em;
+            color: var(--navy-white);
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .service-card p {
+            font-size: 1em;
+            color: var(--navy-grey);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .service-card a {
+            display: inline-block;
+            background: var(--navy-accent-bright);
+            color: var(--navy-bg);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .service-card a:hover {
+            background: var(--navy-gold);
+            color: var(--navy-bg);
+        }
+
+        /* Footer - Updated to match contact page */
+        footer {
+            background: var(--navy-bg-dark);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .footer-column.company {
+            order: 2;
+        }
+
+        .footer-column.social {
+            order: 3;
+        }
+
+        .footer-column.contact {
+            order: 1;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3em;
+            color: var(--navy-accent-bright);
+            margin-bottom: 15px;
+        }
+
+        .footer-column p, .footer-column a {
+            font-size: 0.9em;
+            color: var(--navy-grey);
+            margin: 5px 0;
+            text-decoration: none !important;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            transition: transform 0.3s;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.2);
+        }
+
+        .contact-info img {
+            width: 20px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .footer-divider {
+            width: 50px;
+            height: 3px;
+            background: var(--navy-accent-bright);
+            margin: 10px auto;
+        }
+
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px 10px 8px 10px;
+            }
+            .header-left {
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+            .header-title {
+                font-size: 1em;
+            }
+            .logo img {
+                height: 36px;
+            }
+            nav {
+                margin-top: 8px;
+            }
+            nav a {
+                font-size: 1em;
+                margin: 0 12px;
+                padding: 6px 0;
+            }
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .services-section {
+                padding: 24px 10px 10px 10px;
+            }
+        }
+        @media (max-width: 600px) {
+            .header-title {
+                font-size: 0.95em;
+            }
+            .header-subtitle {
+                font-size: 0.85em;
+            }
+            .logo img {
+                height: 28px;
+            }
+            nav a {
+                font-size: 0.95em;
+                margin: 0 8px;
+                padding: 6px 0;
+            }
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-section {
+                padding: 16px 6px 6px 6px;
+            }
+        }
+
+        /* Contact Info Section */
+        .contact-info-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .contact-info-section h2 {
+            font-size: 2.5em;
+            color: var(--navy-accent-bright);
+            margin-bottom: 20px;
+        }
+
+        .contact-info-section p {
+            font-size: 1.1em;
+            color: var(--navy-grey);
+            margin: 10px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .mobile-menu.active {
+                display: block;
+            }
+
+            .services-section {
+                margin: 20px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-column.company {
+                order: 1;
+            }
+
+            .footer-column.social {
+                order: 2;
+            }
+
+            .footer-column.contact {
+                order: 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starsCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <img src="logo.png" alt="Moonlite Service Logo">
+            </div>
+            <div class="header-title-group">
+                <div class="header-title">Moonlite Events</div>
+                <div class="header-subtitle" style="color:var(--navy-gold);">Making Memories Shine Bright.</div>
+            </div>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="menu-toggle">☰</div>
+        <div class="mobile-menu">
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
+    <section class="about-section" id="about">
+        <div class="about-text">
+            <h2>About Us</h2>
+            <p>
+                At <span style="color:var(--navy-gold);font-weight:600;">Moonlite Events</span>, we believe every moment deserves to be celebrated in style.<br><br>
+                With a passion for creativity and a commitment to excellence, we specialize in crafting events that leave lasting memories.<br><br>
+                <span style="color:var(--navy-accent-bright);font-weight:500;">We don't just plan events; we create cherished moments for you and your guests.</span>
+            </p>
+        </div>
+        <div class="about-carousel-container">
+            <div class="about-carousel" id="aboutCarousel">
+                <img src="Images/img10.jpg" alt="Moonlite Event 1" class="active">
+                <img src="Images/img11.jpg" alt="Moonlite Event 2">
+                <img src="Images/img12.jpg" alt="Moonlite Event 3">
+                <img src="Images/img13.jpg" alt="Moonlite Event 4">
+                <img src="Images/img2.jpg" alt="Moonlite Event 5">
+                <img src="Images/img7.jpg" alt="Moonlite Event 6">
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+                <span class="carousel-dot active"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section" id="services">
+        <h2>Our Services</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <img src="Images/img4.jpg" alt="Birthday Decoration">
+                <h3>Birthday Decoration</h3>
+                <p>Transform birthdays into magical experiences with our vibrant decorations.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img11.jpg" alt="Wedding Decoration">
+                <h3>Wedding Decoration</h3>
+                <p>Elegant designs to make your dream wedding a reality.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img2.jpg" alt="Corporate Events">
+                <h3>Corporate Events</h3>
+                <p>Professional setups for impactful business events.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img10.jpg" alt="Engagement Ceremony Decoration">
+                <h3>Engagement Ceremony Decoration</h3>
+                <p>Romantic and memorable setups for your special day.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img1.jpg" alt="Naming Ceremony Decoration">
+                <h3>Naming Ceremony Decoration</h3>
+                <p>Joyful celebrations for new beginnings.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img14.jpg" alt="Seemantha Decoration">
+                <h3>Seemantha Decoration</h3>
+                <p>Traditional setups for your baby shower celebration.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/cater.jpeg" alt="Catering Services">
+                <h3>Catering Services</h3>
+                <p>Delicious meals to delight your guests.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/photo.jpg" alt="Photography/Videography">
+                <h3>Photography/Videography</h3>
+                <p>Capture every moment with stunning visuals.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+            <div class="service-card">
+                <img src="Images/img15.jpg" alt="Artists/MC/Entertainment">
+                <h3>Artists/Emcee/Entertainment</h3>
+                <p>Engaging performances to entertain your guests.</p>
+                <a href="contact.html">Book Now</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-column contact">
+            <h3>Contact Info</h3>
+            <div class="footer-divider"></div>
+            <p>&#128222; +91 8618195465</p>
+            <p>
+                <a href="mailto:moonliteevents45@gmail.com" style="color:#ffd700;" target="_blank">
+                    📧 moonliteevents45@gmail.com
+                </a>
+            </p>
+        </div>
+        <div class="footer-column company">
+            <h3>Moonlite Events</h3>
+            <div class="footer-divider"></div>
+            <p>© 2025. All Rights Reserved.</p>
+             <p>© AdiRon</p>
+        </div>
+        <div class="footer-column social">
+            <h3>Connect With Us</h3>
+            <div class="footer-divider"></div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/moonlite__events?utm_source=qr&igsh=MWpkbXU5YzJnZTZlOA==" target="_blank" title="Instagram">
+                    <img src="Images/insta.jpeg" alt="Instagram" style="filter: invert(100%);">
+                </a>
+                <a href="https://www.facebook.com/share/1BMd6iE9Zf/" target="_blank" title="Facebook">
+                    <img src="Images/face.png" alt="Facebook" style="filter: invert(100%);">
+                </a>
+            </div>
+            <div class="location-info">
+                <a href="https://www.google.com/search?sca_esv=a70ab11ae1ae9f07&hl=en&gl=in&output=search&kgmid=/g/11lysrjndf&q=Moonlite+Events&shndl=30&shem=lspt11,ptotpc&source=sh/x/loc/act/m1/2&kgs=2e1a4890d2990be3" target="_blank" style="color:#ffd700;">
+                    📍 Bangalore, India
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.mobile-menu').classList.toggle('active');
+        });
+
+        // 3D Starry Background with Comets (more random and fills the whole screen)
+        const canvas = document.getElementById('starsCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let comets = [];
+
+        function randomSpread(n, width, height) {
+            // Use Poisson disk sampling for more randomness and avoid clustering
+            const points = [];
+            const minDist = Math.sqrt((width * height) / n) * 0.7;
+            let tries = 0;
+            while (points.length < n && tries < n * 20) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                let ok = true;
+                for (let p of points) {
+                    const dx = p.x - x;
+                    const dy = p.y - y;
+                    if (dx * dx + dy * dy < minDist * minDist) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok) points.push({ x, y });
+                tries++;
+            }
+            // If not enough points, fill randomly
+            while (points.length < n) {
+                points.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height
+                });
+            }
+            return points;
+        }
+
+        function initParticles() {
+            // Make sure canvas always fills the viewport
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const starCount = Math.floor(window.innerWidth * window.innerHeight / 1800); // denser and more random
+            const cometCount = Math.max(3, Math.floor(starCount / 15));
+            stars = [];
+            comets = [];
+            const starPositions = randomSpread(starCount, canvas.width, canvas.height);
+
+            // --- Evenly spread out comets using a jittered grid ---
+            function evenSpreadComets(n, width, height) {
+                const cometsArr = [];
+                const gridCols = Math.ceil(Math.sqrt(n));
+                const gridRows = Math.ceil(n / gridCols);
+                let idx = 0;
+                for (let row = 0; row < gridRows; row++) {
+                    for (let col = 0; col < gridCols && idx < n; col++, idx++) {
+                        const cellW = width / gridCols;
+                        const cellH = height / gridRows;
+                        const x = col * cellW + cellW / 2 + (Math.random() - 0.5) * cellW * 0.4;
+                        const y = row * cellH + cellH / 2 + (Math.random() - 0.5) * cellH * 0.4;
+                        cometsArr.push({ x, y });
+                    }
+                }
+                return cometsArr;
+            }
+            // ------------------------------------------------------
+
+            for (let i = 0; i < starCount; i++) {
+                const pos = starPositions[i];
+                stars.push({
+                    x: pos.x,
+                    y: pos.y,
+                    z: Math.random() * canvas.width,
+                    size: Math.random() * 2.2 + 0.3,
+                    speed: Math.random() * 0.7 + 0.15,
+                    twinkle: Math.random() * Math.PI * 2
+                });
+            }
+            // Use evenSpreadComets for more even distribution
+            const cometPositions = evenSpreadComets(cometCount, canvas.width, canvas.height);
+            for (let i = 0; i < cometCount; i++) {
+                const pos = cometPositions[i];
+                comets.push({
+                    x: pos.x,
+                    y: pos.y,
+                    z: Math.random() * canvas.width,
+                    size: Math.random() * 4 + 2,
+                    speed: Math.random() * 2.5 + 1,
+                    tailLength: Math.random() * 80 + 30,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw stars with twinkle
+            for (let star of stars) {
+                const perspective = canvas.width / (canvas.width + star.z);
+                const px = (star.x - canvas.width / 2) * perspective + canvas.width / 2;
+                const py = (star.y - canvas.height / 2) * perspective + canvas.height / 2;
+                const twinkle = 0.7 + 0.3 * Math.sin(Date.now() / 700 + star.twinkle);
+                const size = star.size * perspective * twinkle;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.globalAlpha = 0.7 + 0.3 * twinkle;
+                ctx.fillStyle = "#fff";
+                ctx.shadowColor = "#fff";
+                ctx.shadowBlur = 6 * twinkle;
+                ctx.fill();
+                ctx.restore();
+                star.z -= star.speed;
+                if (star.z <= 0) {
+                    // Respawn star at a new random position
+                    const pos = randomSpread(1, canvas.width, canvas.height)[0];
+                    star.z = canvas.width;
+                    star.x = pos.x;
+                    star.y = pos.y;
+                    star.twinkle = Math.random() * Math.PI * 2;
+                }
+            }
+            // Draw comets with random angles
+            for (let comet of comets) {
+                const perspective = canvas.width / (canvas.width + comet.z);
+                const px = (comet.x - canvas.width / 2) * perspective + canvas.width / 2;
+                const py = (comet.y - canvas.height / 2) * perspective + canvas.height / 2;
+                const size = comet.size * perspective;
+                const angle = comet.angle;
+                // Draw comet tail
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(
+                    px - Math.cos(angle) * comet.tailLength * perspective,
+                    py - Math.sin(angle) * comet.tailLength * perspective
+                );
+                const gradient = ctx.createLinearGradient(
+                    px, py,
+                    px - Math.cos(angle) * comet.tailLength * perspective,
+                    py - Math.sin(angle) * comet.tailLength * perspective
+                );
+                gradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = size;
+                ctx.globalAlpha = 0.8;
+                ctx.shadowColor = "#ffd700";
+                ctx.shadowBlur = 12;
+                ctx.stroke();
+                ctx.restore();
+                // Draw comet head
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.globalAlpha = 0.95;
+                ctx.fillStyle = '#ffd700';
+                ctx.shadowColor = "#ffd700";
+                ctx.shadowBlur = 16;
+                ctx.fill();
+                ctx.restore();
+                comet.z -= comet.speed;
+                // Move comet in its angle direction
+                comet.x += Math.cos(angle) * comet.speed * 0.7;
+                comet.y += Math.sin(angle) * comet.speed * 0.7;
+                if (
+                    comet.z <= 0 ||
+                    comet.x < 0 || comet.x > canvas.width ||
+                    comet.y < 0 || comet.y > canvas.height
+                ) {
+                    // Respawn comet at a new random position and angle
+                    const pos = randomSpread(1, canvas.width, canvas.height)[0];
+                    comet.z = canvas.width;
+                    comet.x = pos.x;
+                    comet.y = pos.y;
+                    comet.angle = Math.random() * Math.PI * 2;
+                }
+            }
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        initParticles();
+        drawParticles();
+
+        // About Carousel Script (auto-slide, no arrows, 6 images)
+       (function() {
+    const images = document.querySelectorAll('#aboutCarousel img');
+    const dots = document.querySelectorAll('#carouselDots .carousel-dot');
+    let idx = 0;
+    let timer;
+    
+    // Function to show selected image with improved transition
+    function show(idxNew, userInitiated = false) {
+        // First hide current image
+        images[idx].classList.remove('active');
+        dots[idx].classList.remove('active');
+        
+        // Update index
+        idx = idxNew;
+        
+        // Show new image
+        images[idx].classList.add('active');
+        dots[idx].classList.add('active');
+        
+        // Reset the timer if user clicked a dot
+        if (userInitiated) {
+            clearInterval(timer);
+            timer = setInterval(() => show((idx + 1) % images.length), 6000);
+        }
+    }
+    
+    // Add click event to dots with user initiated flag
+    dots.forEach((dot, i) => {
+        dot.onclick = () => show(i, true);
+    });
+    
+    // Add swipe functionality for mobile
+    const carousel = document.getElementById('aboutCarousel');
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    carousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, false);
+    
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            // Swipe left - show next image
+            show((idx + 1) % images.length, true);
+        } else if (touchEndX > touchStartX + 50) {
+            // Swipe right - show previous image
+            show((idx - 1 + images.length) % images.length, true);
+        }
+    }
+    
+    // Preload images for smoother transitions
+    Array.from(images).forEach(img => {
+        const preloadImage = new Image();
+        preloadImage.src = img.src;
+    });
+    
+    // Start the slideshow with longer 6-second interval
+    timer = setInterval(() => show((idx + 1) % images.length), 6000);
+})();
+    </script>
+</body>
+</html>

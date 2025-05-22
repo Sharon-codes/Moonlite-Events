@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moonlite Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-bg: #0a1833;
+            --navy-bg-dark: #07122a;
+            --navy-bg-light: #1c2c4a;
+            --navy-accent: #2e4a7d;
+            --navy-accent-light: #3e5c99;
+            --navy-accent-bright: #4f7ccf;
+            --navy-gold: #ffd700;
+            --navy-white: #f5f7fa;
+            --navy-grey: #b8c1d1;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--navy-bg) 0%, var(--navy-bg-dark) 100%);
+            color: var(--navy-white);
+            overflow-x: hidden;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+        }
+
+        body.page-loaded {
+            opacity: 1;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--navy-bg) 60%, var(--navy-accent-bright) 100%);
+            padding: 18px 20px 14px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            box-shadow: 0 4px 24px 0 rgba(10,24,51,0.25);
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo img {
+            height: 56px; /* Increased from 48px */
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px 0 rgba(46,74,125,0.12);
+            background: #fff2;
+        }
+
+        .header-title-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .header-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--navy-accent-bright);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px #0008;
+        }
+
+        .header-subtitle {
+            font-size: 1em;
+            color: var(--navy-gold);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 8px #0006;
+        }
+
+        nav {
+            text-align: center;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        nav a {
+            color: var(--navy-white);
+            text-decoration: none;
+            margin: 0 18px;
+            font-size: 1.15em;
+            font-weight: 600;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+            padding: 6px 0 6px 0;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: var(--navy-gold);
+            border-bottom: 2px solid var(--navy-gold);
+        }
+
+        nav a[href="#services"] {
+            display: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            color: var(--navy-white);
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            background: var(--navy-bg);
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: var(--navy-white);
+            text-decoration: none;
+            padding: 10px;
+            font-size: 1.1em;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--navy-accent-bright);
+        }
+
+        .contact-section {
+            max-width: 600px;
+            margin: 120px auto 50px auto; /* Increased top margin */
+            padding: 20px;
+            background: rgba(46, 74, 125, 0.15);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(10,24,51,0.3);
+            border: 1px solid var(--navy-accent);
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: var(--navy-accent-bright);
+            margin-bottom: 20px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 1em;
+            color: var(--navy-gold);
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(28, 44, 74, 0.7);
+            color: var(--navy-white);
+            font-size: 1em;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            background: rgba(46, 74, 125, 0.85);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: var(--navy-gold);
+            color: var(--navy-bg);
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: 600;
+        }
+
+        .submit-btn:hover {
+            background: #e6c200;
+            transform: scale(1.05);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            color: var(--navy-gold);
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        footer {
+            background: var(--navy-bg-dark);
+            padding: 20px; /* Reduced from 40px */
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .footer-column.company {
+            order: 2;
+        }
+
+        .footer-column.social {
+            order: 3;
+        }
+
+        .footer-column.contact {
+            order: 1;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3em; /* Reduced from 1.5em */
+            color: var(--navy-accent-bright);
+            margin-bottom: 15px;
+        }
+
+        .footer-column p, .footer-column a {
+            font-size: 0.9em; /* Reduced from 1em */
+            color: var(--navy-grey);
+            margin: 5px 0;
+            text-decoration: none !important;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            transition: transform 0.3s;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.2);
+        }
+
+        .contact-info img {
+            width: 20px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .footer-divider {
+            width: 50px;
+            height: 3px;
+            background: var(--navy-accent-bright);
+            margin: 10px auto;
+        }
+
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px 10px 8px 10px;
+            }
+            .header-left {
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+            .header-title {
+                font-size: 1em;
+            }
+            .logo img {
+                height: 36px;
+            }
+            nav {
+                margin-top: 8px;
+            }
+            nav a {
+                font-size: 1em;
+                margin: 0 12px;
+                padding: 6px 0;
+            }
+        }
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .mobile-menu.active {
+                display: block;
+            }
+
+            .contact-section {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-column.company {
+                order: 1;
+            }
+
+            .footer-column.social {
+                order: 2;
+            }
+
+            .footer-column.contact {
+                order: 3;
+            }
+        }
+        @media (max-width: 600px) {
+            .header-title {
+                font-size: 0.95em;
+            }
+            .header-subtitle {
+                font-size: 0.85em;
+            }
+            .logo img {
+                height: 28px;
+            }
+            nav a {
+                font-size: 0.95em;
+                margin: 0 8px;
+                padding: 6px 0;
+            }
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starsCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <img src="logo.png" alt="Moonlite Service Logo">
+            </div>
+            <div class="header-title-group">
+                <div class="header-title">Moonlite Events</div>
+                <div class="header-subtitle" style="color:var(--navy-gold);">Reach out to us for unforgettable events.</div>
+            </div>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="menu-toggle">☰</div>
+        <div class="mobile-menu">
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
+    <section class="contact-section">
+        <h2>Get in Touch</h2>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Your Phone Number" required>
+            </div>
+            <div class="form-group">
+                <label for="service">Our Service</label>
+                <select id="service" required>
+                    <option value="" disabled selected>Select a Service</option>
+                    <option value="birthday">Birthday Decoration</option>
+                    <option value="wedding">Wedding Decoration</option>
+                    <option value="corporate">Corporate Events</option>
+                    <option value="engagement">Engagement Ceremony Decoration</option>
+                    <option value="naming">Naming Ceremony Decoration</option>
+                    <option value="seemantha">Seemantha Decoration</option>
+                    <option value="catering">Catering Services</option>
+                    <option value="photography">Photography/Videography</option>
+                    <option value="entertainment">Artists/Emcee/Entertainment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Additional Description</label>
+                <textarea id="description" placeholder="Tell us about your event..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <div class="success-message" id="successMessage">Thank you for your submission! We'll get back to you soon.</div>
+        <div class="success-message" id="errorMessage" style="color:#ff6b6b;"></div>
+    </section>
+
+    <footer>
+        <div class="footer-column contact">
+            <h3>Contact Info</h3>
+            <div class="footer-divider"></div>
+            <p>&#128222; +91 8618195465</p>
+            <p>
+                <a href="mailto:moonliteevents45@gmail.com" style="color:#ffd700;" target="_blank">
+                    📧 moonliteevents45@gmail.com
+                </a>
+            </p>
+        </div>
+        <div class="footer-column company">
+            <h3>Moonlite Events</h3>
+            <div class="footer-divider"></div>
+            <p>© 2025. All Rights Reserved.</p>
+            <p>© AdiRon</p>
+        </div>
+        <div class="footer-column social">
+            <h3>Connect With Us</h3>
+            <div class="footer-divider"></div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/moonlite__events?utm_source=qr&igsh=MWpkbXU5YzJnZTZlOA==" target="_blank" title="Instagram">
+                    <img src="Images/insta.jpeg" alt="Instagram" style="filter: invert(100%);">
+                </a>
+                <a href="https://www.facebook.com/share/1BMd6iE9Zf/" target="_blank" title="Facebook">
+                    <img src="Images/face.png" alt="Facebook" style="filter: invert(100%);">
+                </a>
+            </div>
+            <div class="location-info">
+                <a href="https://www.google.com/search?sca_esv=a70ab11ae1ae9f07&hl=en&gl=in&output=search&kgmid=/g/11lysrjndf&q=Moonlite+Events&shndl=30&shem=lspt11,ptotpc&source=sh/x/loc/act/m1/2&kgs=2e1a4890d2990be3" target="_blank" style="color:#ffd700;">
+                    📍 Bangalore, India
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Starry background (same as index.html)
+        const canvas = document.getElementById('starsCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let comets = [];
+
+        function randomSpread(n, width, height) {
+            // Use Poisson disk sampling for more randomness and avoid clustering
+            const points = [];
+            const minDist = Math.sqrt((width * height) / n) * 0.7;
+            let tries = 0;
+            while (points.length < n && tries < n * 20) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                let ok = true;
+                for (let p of points) {
+                    const dx = p.x - x;
+                    const dy = p.y - y;
+                    if (dx * dx + dy * dy < minDist * minDist) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok) points.push({ x, y });
+                tries++;
+            }
+            // If not enough points, fill randomly
+            while (points.length < n) {
+                points.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height
+                });
+            }
+            return points;
+        }
+
+        function initParticles() {
+            // Make sure canvas always fills the viewport
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const starCount = Math.floor(window.innerWidth * window.innerHeight / 1800); // denser and more random
+            const cometCount = Math.max(3, Math.floor(starCount / 15));
+            stars = [];
+            comets = [];
+            const starPositions = randomSpread(starCount, canvas.width, canvas.height);
+
+            // --- Evenly spread out comets using a jittered grid ---
+            function evenSpreadComets(n, width, height) {
+                const cometsArr = [];
+                const gridCols = Math.ceil(Math.sqrt(n));
+                const gridRows = Math.ceil(n / gridCols);
+                let idx = 0;
+                for (let row = 0; row < gridRows; row++) {
+                    for (let col = 0; col < gridCols && idx < n; col++, idx++) {
+                        const cellW = width / gridCols;
+                        const cellH = height / gridRows;
+                        const x = col * cellW + cellW / 2 + (Math.random() - 0.5) * cellW * 0.4;
+                        const y = row * cellH + cellH / 2 + (Math.random() - 0.5) * cellH * 0.4;
+                        cometsArr.push({ x, y });
+                    }
+                }
+                return cometsArr;
+            }
+            // ------------------------------------------------------
+
+            for (let i = 0; i < starCount; i++) {
+                const pos = starPositions[i];
+                stars.push({
+                    x: pos.x,
+                    y: pos.y,
+                    z: Math.random() * canvas.width,
+                    size: Math.random() * 2.2 + 0.3,
+                    speed: Math.random() * 0.7 + 0.15,
+                    twinkle: Math.random() * Math.PI * 2
+                });
+            }
+            // Use evenSpreadComets for more even distribution
+            const cometPositions = evenSpreadComets(cometCount, canvas.width, canvas.height);
+            for (let i = 0; i < cometCount; i++) {
+                const pos = cometPositions[i];
+                comets.push({
+                    x: pos.x,
+                    y: pos.y,
+                    z: Math.random() * canvas.width,
+                    size: Math.random() * 4 + 2,
+                    speed: Math.random() * 2.5 + 1,
+                    tailLength: Math.random() * 80 + 30,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw stars with twinkle
+            for (let star of stars) {
+                const perspective = canvas.width / (canvas.width + star.z);
+                const px = (star.x - canvas.width / 2) * perspective + canvas.width / 2;
+                const py = (star.y - canvas.height / 2) * perspective + canvas.height / 2;
+                const twinkle = 0.7 + 0.3 * Math.sin(Date.now() / 700 + star.twinkle);
+                const size = star.size * perspective * twinkle;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.globalAlpha = 0.7 + 0.3 * twinkle;
+                ctx.fillStyle = "#fff";
+                ctx.shadowColor = "#fff";
+                ctx.shadowBlur = 6 * twinkle;
+                ctx.fill();
+                ctx.restore();
+                star.z -= star.speed;
+                if (star.z <= 0) {
+                    // Respawn star at a new random position
+                    const pos = randomSpread(1, canvas.width, canvas.height)[0];
+                    star.z = canvas.width;
+                    star.x = pos.x;
+                    star.y = pos.y;
+                    star.twinkle = Math.random() * Math.PI * 2;
+                }
+            }
+            // Draw comets with random angles
+            for (let comet of comets) {
+                const perspective = canvas.width / (canvas.width + comet.z);
+                const px = (comet.x - canvas.width / 2) * perspective + canvas.width / 2;
+                const py = (comet.y - canvas.height / 2) * perspective + canvas.height / 2;
+                const size = comet.size * perspective;
+                const angle = comet.angle;
+                // Draw comet tail
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(
+                    px - Math.cos(angle) * comet.tailLength * perspective,
+                    py - Math.sin(angle) * comet.tailLength * perspective
+                );
+                const gradient = ctx.createLinearGradient(
+                    px, py,
+                    px - Math.cos(angle) * comet.tailLength * perspective,
+                    py - Math.sin(angle) * comet.tailLength * perspective
+                );
+                gradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = size;
+                ctx.globalAlpha = 0.8;
+                ctx.shadowColor = "#ffd700";
+                ctx.shadowBlur = 12;
+                ctx.stroke();
+                ctx.restore();
+                // Draw comet head
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.globalAlpha = 0.95;
+                ctx.fillStyle = '#ffd700';
+                ctx.shadowColor = "#ffd700";
+                ctx.shadowBlur = 16;
+                ctx.fill();
+                ctx.restore();
+                comet.z -= comet.speed;
+                // Move comet in its angle direction
+                comet.x += Math.cos(angle) * comet.speed * 0.7;
+                comet.y += Math.sin(angle) * comet.speed * 0.7;
+                if (
+                    comet.z <= 0 ||
+                    comet.x < 0 || comet.x > canvas.width ||
+                    comet.y < 0 || comet.y > canvas.height
+                ) {
+                    // Respawn comet at a new random position and angle
+                    const pos = randomSpread(1, canvas.width, canvas.height)[0];
+                    comet.z = canvas.width;
+                    comet.x = pos.x;
+                    comet.y = pos.y;
+                    comet.angle = Math.random() * Math.PI * 2;
+                }
+            }
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        initParticles();
+        drawParticles();
+
+        // Prevent default form submission and send data via fetch
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('page-loaded');
+            const form = document.getElementById('contactForm');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                successMsg.style.display = 'none';
+                errorMsg.style.display = 'none';
+
+                const name = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const service = document.getElementById('service').value;
+                const description = document.getElementById('description').value.trim();
+
+                try {
+                    const response = await fetch('http://localhost:3000/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, phone, service, description })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        successMsg.style.display = 'block';
+                        errorMsg.style.display = 'none';
+                        form.reset();
+                    } else {
+                        errorMsg.textContent = data.message || 'Submission failed.';
+                        errorMsg.style.display = 'block';
+                        successMsg.style.display = 'none';
+                    }
+                } catch (err) {
+                    errorMsg.textContent = 'Could not submit form. Please try again later.';
+                    errorMsg.style.display = 'block';
+                    successMsg.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
