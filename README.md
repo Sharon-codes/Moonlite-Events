@@ -29,8 +29,6 @@ npm install express nodemailer cors dotenv sanitize-html
 
  3. Create `.env` file
 
-env
-
 PORT=3000
 
 SMTP_HOST=smtp.example.com
