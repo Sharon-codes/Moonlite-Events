@@ -13,15 +13,6 @@ A stunning, responsive event management web platform for **Moonlite Events** —
 - 📱 Responsive Design for mobile, tablet, and desktop screens
 - 🔐 Input Validation & Sanitization for secure backend processing
 
- 📁 Project Structure
-.
-├── index.html          # Homepage with services & about carousel
-├── contact.html        # Contact form for inquiries
-├── server.js           # Express.js backend to process form data
-├── Images/             # Contains all event and icon images
-└── .env                # Email credentials (not included in repo)
-
-
 🚀 Getting Started
 
  1. Clone the repository
@@ -39,11 +30,17 @@ npm install express nodemailer cors dotenv sanitize-html
  3. Create `.env` file
 
 env
+
 PORT=3000
+
 SMTP_HOST=smtp.example.com
+
 SMTP_PORT=587
+
 EMAIL_USER=your-email@example.com
+
 EMAIL_PASS=your-password
+
 RECEIVER_EMAIL=moonliteevents45@gmail.com
 
 ⚠️ Never commit your `.env` file.
